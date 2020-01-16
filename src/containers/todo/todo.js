@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { addTask } from "../../actions/actionCreator";
+import {
+  addTask,
+  removeTask,
+  completeTask,
+  changeFilter
+} from "../../actions/actionCreator";
 
 import ToDoInput from "../../components/todo-input/todo-input";
 import ToDoList from "../../components/todo-list/todo-list";
@@ -11,7 +16,6 @@ import "./todo.scss";
 
 class Todo extends Component {
   state = {
-    activeFilter: "all",
     taskText: ""
   };
 
@@ -33,8 +37,14 @@ class Todo extends Component {
     }
   };
   render() {
-    const { activeFilter, taskText } = this.state;
-    const { tasks } = this.props;
+    const { taskText } = this.state;
+    const {
+      tasks,
+      removeTask,
+      completeTask,
+      filter,
+      changeFilter
+    } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
 
     return (
@@ -44,9 +54,19 @@ class Todo extends Component {
           value={taskText}
           onKeyPress={this.addTask}
         />
-        {isTasksExist && <ToDoList tasksList={tasks} />}
         {isTasksExist && (
-          <Footer amount={tasks.length} activeFilter={activeFilter} />
+          <ToDoList
+            completeTask={completeTask}
+            tasksList={tasks}
+            removeTask={removeTask}
+          />
+        )}
+        {isTasksExist && (
+          <Footer
+            amount={tasks.length}
+            activeFilter={filter}
+            changeFilter={changeFilter}
+          />
         )}
       </div>
     );
@@ -54,8 +74,9 @@ class Todo extends Component {
 }
 
 export default connect(
-  state => ({
-    tasks: state.tasks
+  ({ tasks, filter }) => ({
+    tasks,
+    filter
   }),
-  { addTask }
+  { addTask, removeTask, completeTask, changeFilter }
 )(Todo);

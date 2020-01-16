@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "./footer.scss";
 
@@ -17,7 +18,7 @@ const FILTERS_BTN = [
   }
 ];
 
-const Footer = ({ amount, activeFilter }) => (
+const Footer = ({ amount, activeFilter, changeFilter }) => (
   <div className="footer">
     <span className="amount">{`${amount} Tasks left`}</span>
     <div className="btn-group">
@@ -33,4 +34,7 @@ const Footer = ({ amount, activeFilter }) => (
   </div>
 );
 
+Footer.propTypes = {
+  amount: PropTypes.number
+};
 export default Footer;
