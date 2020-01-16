@@ -36,16 +36,33 @@ class Todo extends Component {
       });
     }
   };
+
+  filterTasks = (tasks, activeFilter) => {
+    switch (activeFilter) {
+      case "completed":
+        return tasks.filter(task => task.isCompleted);
+      case "active":
+        return tasks.filter(task => !task.isCompleted);
+      default:
+        return tasks;
+    }
+  };
+
+  getActiveTasksCounter = tasks =>
+    tasks.filter(task => !task.isCompleted).length;
+
   render() {
     const { taskText } = this.state;
     const {
       tasks,
       removeTask,
       completeTask,
-      filter,
+      filters,
       changeFilter
     } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
+    const filteredTasks = this.filterTasks(tasks, filters);
+    const taskCounter = this.getActiveTasksCounter(tasks);
 
     return (
       <div className="todo-wrapper">
@@ -57,14 +74,14 @@ class Todo extends Component {
         {isTasksExist && (
           <ToDoList
             completeTask={completeTask}
-            tasksList={tasks}
+            tasksList={filteredTasks}
             removeTask={removeTask}
           />
         )}
         {isTasksExist && (
           <Footer
-            amount={tasks.length}
-            activeFilter={filter}
+            amount={taskCounter}
+            activeFilter={filters}
             changeFilter={changeFilter}
           />
         )}
@@ -74,9 +91,9 @@ class Todo extends Component {
 }
 
 export default connect(
-  ({ tasks, filter }) => ({
+  ({ tasks, filters }) => ({
     tasks,
-    filter
+    filters
   }),
   { addTask, removeTask, completeTask, changeFilter }
 )(Todo);

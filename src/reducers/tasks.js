@@ -1,29 +1,38 @@
 import { ADD_TASK, REMOVE_TASK, COMPLETE_TASK } from "../constants";
+import { load } from "redux-localstorage-simple";
 
-const TASKS = [
-  {
-    id: 1,
-    text: "Learn React",
-    isCompleted: true
-  },
-  {
-    id: 2,
-    text: "Learn Redux",
-    isCompleted: false
-  },
-  {
-    id: 3,
-    text: "Learn React Router",
-    isCompleted: false
-  },
-  {
-    id: 4,
-    text: "Learn immerJs",
-    isCompleted: true
-  }
-];
+let TASKS = load({ namespace: "todo-list" });
 
-const tasks = (state = TASKS, { id, text, isCompleted, type }) => {
+if (!TASKS || !TASKS.tasks || !TASKS.tasks.length) {
+  TASKS = {
+    tasks: []
+  };
+}
+
+// const TASKS = [
+//   {
+//     id: 1,
+//     text: "Learn React",
+//     isCompleted: true
+//   },
+//   {
+//     id: 2,
+//     text: "Learn Redux",
+//     isCompleted: false
+//   },
+//   {
+//     id: 3,
+//     text: "Learn React Router",
+//     isCompleted: false
+//   },
+//   {
+//     id: 4,
+//     text: "Learn immerJs",
+//     isCompleted: true
+//   }
+// ];
+
+const tasks = (state = TASKS.tasks, { id, text, isCompleted, type }) => {
   switch (type) {
     case ADD_TASK:
       return [
