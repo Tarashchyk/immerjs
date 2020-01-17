@@ -19,6 +19,7 @@
 
 .completed {
   text-decoration: line-through;
+  pointer-events: none;
 }
 
 .completed,
@@ -31,11 +32,12 @@
   color: rgba(175, 47, 47, 0.15);
 }
 
+.fa-times:hover {
+  color: rgba(175, 47, 47, 0.9);
+  transform: scale(1.3);
+}
+
 .mark {
   position: absolute;
   left: 20px;
-}
-
-.todo-item:hover .fa-times {
-  color: rgba(175, 47, 47, 0.9);
 }

@@ -5,7 +5,7 @@ import ToDoItem from "../todo-item/todo-item";
 
 import "./todo-list.scss";
 
-const ToDoList = ({ tasksList, removeTask, completeTask }) => (
+const ToDoList = ({ tasksList, removeTask, completeTask, editTask }) => (
   <ul className="todo-list">
     {tasksList.map(({ id, text, isCompleted }) => (
       <ToDoItem
@@ -15,6 +15,7 @@ const ToDoList = ({ tasksList, removeTask, completeTask }) => (
         isCompleted={isCompleted}
         removeTask={removeTask}
         completeTask={completeTask}
+        editTask={editTask}
       />
     ))}
   </ul>

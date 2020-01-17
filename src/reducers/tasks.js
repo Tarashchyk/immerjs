@@ -1,5 +1,6 @@
-import { ADD_TASK, REMOVE_TASK, COMPLETE_TASK } from "../constants";
+import { ADD_TASK, REMOVE_TASK, COMPLETE_TASK, EDIT_TASK } from "../constants";
 import { load } from "redux-localstorage-simple";
+import produce from "immer";
 
 let TASKS = load({ namespace: "todo-list" });
 
@@ -32,29 +33,42 @@ if (!TASKS || !TASKS.tasks || !TASKS.tasks.length) {
 //   }
 // ];
 
-const tasks = (state = TASKS.tasks, { id, text, isCompleted, type }) => {
-  switch (type) {
-    case ADD_TASK:
-      return [
-        ...state,
-        {
+const tasks = produce(
+  (draft = TASKS.tasks, { type, id, text, isCompleted }) => {
+    switch (type) {
+      case ADD_TASK: {
+        draft.push({
           id,
           text,
           isCompleted
-        }
-      ];
-    case REMOVE_TASK:
-      return [...state].filter(task => task.id !== id);
-    case COMPLETE_TASK:
-      return [...state].map(task => {
-        if (task.id === id) {
-          task.isCompleted = !task.isCompleted;
-        }
-        return task;
-      });
-    default:
-      return state;
+        });
+        return;
+      }
+      case REMOVE_TASK: {
+        draft.splice(
+          draft.findIndex(task => task.id === id),
+          1
+        );
+        return;
+      }
+      case COMPLETE_TASK: {
+        draft.map(task => {
+          if (task.id === id) {
+            task.isCompleted = !task.isCompleted;
+          }
+          return task;
+        });
+        return;
+      }
+      case EDIT_TASK: {
+        draft.find(task => task.id === id).text = text;
+        return;
+      }
+      default: {
+        return draft;
+      }
+    }
   }
-};
+);
 
 export default tasks;

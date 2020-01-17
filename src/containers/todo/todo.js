@@ -5,7 +5,8 @@ import {
   addTask,
   removeTask,
   completeTask,
-  changeFilter
+  changeFilter,
+  editTask
 } from "../../actions/actionCreator";
 
 import ToDoInput from "../../components/todo-input/todo-input";
@@ -58,7 +59,8 @@ class Todo extends Component {
       removeTask,
       completeTask,
       filters,
-      changeFilter
+      changeFilter,
+      editTask
     } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
     const filteredTasks = this.filterTasks(tasks, filters);
@@ -76,6 +78,7 @@ class Todo extends Component {
             completeTask={completeTask}
             tasksList={filteredTasks}
             removeTask={removeTask}
+            editTask={editTask}
           />
         )}
         {isTasksExist && (
@@ -95,5 +98,5 @@ export default connect(
     tasks,
     filters
   }),
-  { addTask, removeTask, completeTask, changeFilter }
+  { addTask, removeTask, completeTask, changeFilter, editTask }
 )(Todo);
